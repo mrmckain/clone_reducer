@@ -1,6 +1,6 @@
 clone_reducer
 =============
-<h1><b>Author<\b><\h1>
+<h1><b>Author</b></h1>
 Michael R. McKain, 2014.
 
 Clone reducing script used in Estep et al. (2014). DOI will be provided when available.
