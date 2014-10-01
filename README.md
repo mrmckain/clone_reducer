@@ -1,6 +1,7 @@
 clone_reducer
 =============
-<b>Author</b>:Michael R. McKain
+<b>Author</b>: Michael R. McKain<br>
+</br>
 Version 1.0: October 2014
 
 Clone reducing script used in Estep et al. (2014). DOI will be provided when available.
