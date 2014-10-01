@@ -4,6 +4,13 @@ clone_reducer
 </br>
 Version 1.0, October 2014
 <br></br>
+
+<h1>Description</h1>
+
+Clone_reducer identifies clades in a gene tree that comprise a single accession/species with a bootstrap value greater than or equal to what the user chooses. The clade is reduced to a consensus sequence and a new alignment file is written.
+
+
+
 Clone reducing script used in Estep et al. (2014). DOI will be provided when available.
 
 Script looks at gene tree to identify clades with a bootstrap value of at least X that comprise the same accession/species. These clades are reduced (in the alignment) to a single consensus sequence. 
