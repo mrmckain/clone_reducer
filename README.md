@@ -22,7 +22,7 @@ Clone reducing script used in Estep et al. (2014). DOI will be provided when ava
 <b>Removed Clones</b>:<br></br>
 	Sequences of clones that were condensed.
 
-<h4>Usage</h4><br></br>
+<h4>Usage</h4>
 
 perl clone_reducer.pl -alignment file -tree file [options] 
 
