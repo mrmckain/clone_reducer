@@ -28,9 +28,9 @@ perl clone_reducer.pl -alignment file -tree file [options]
 
 Options:
 
-	-alignment 			Alignment file in FASTA format used to produce gene tree<br></br>
+	-alignment 			Alignment file in FASTA format used to produce gene tree
 	-tree 				Newick tree file created from alignment
-	-percent_length 		Percent in decimal format of unaligned sequence to alignment length [Default: 0.5]
+	-percent_length 	Percent in decimal format of unaligned sequence to alignment length [Default: 0.5]
 	-bootstrap 			Minimum bootstrap value for clade to be considered for consensus sequence [Default: 50]
 	-help 				Brief help message
 	-man 				Full documentation
