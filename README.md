@@ -9,6 +9,8 @@ Version 1.0, October 2014
 
 Clone_reducer identifies clades in a gene tree that comprise a single accession/species with a bootstrap value greater than or equal to what the user chooses. The clade is reduced to a consensus sequence and a new alignment file is written. The consensus is based on majority rules.
 
+Clone reducing script used in Estep et al. (2014). DOI will be provided when available.
+
 <h4>Output</h4>
 
 <b>Condensed Clones File</b>:<br></br>
@@ -20,16 +22,16 @@ Clone_reducer identifies clades in a gene tree that comprise a single accession/
 <b>Removed Clones</b>:<br></br>
 	Sequences of clones that were condensed.
 
+<h4>Usage</h4>:<br></br>
+<p>
+perl clone_reducer.pl -alignment file -tree file [options] 
 
+Options:
 
-Clone reducing script used in Estep et al. (2014). DOI will be provided when available.
-
-Script looks at gene tree to identify clades with a bootstrap value of at least X that comprise the same accession/species. These clades are reduced (in the alignment) to a single consensus sequence. 
-
-Output files include:
-
-Logfile: Shows which sequences for what accessions were used to create a consensus sequence.
-
-Reduced Alignment:
-
-Removed Sequences: Full length sequences for those either used to make a consensus sequence or removed due to length.
+	-alignment 			Alignment file in FASTA format used to produce gene tree
+	-tree 				Newick tree file created from alignment
+	-percent_length 		Percent in decimal format of unaligned sequence to alignment length [Default: 0.5]
+	-bootstrap 			Minimum bootstrap value for clade to be considered for consensus sequence [Default: 50]
+	-help 				Brief help message
+	-man 				Full documentation
+</p>
