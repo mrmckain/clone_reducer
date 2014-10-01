@@ -22,16 +22,15 @@ Clone reducing script used in Estep et al. (2014). DOI will be provided when ava
 <b>Removed Clones</b>:<br></br>
 	Sequences of clones that were condensed.
 
-<h4>Usage</h4>:<br></br>
-<p>
+<h4>Usage</h4><br></br>
+
 perl clone_reducer.pl -alignment file -tree file [options] 
 
 Options:
 
-	-alignment 			Alignment file in FASTA format used to produce gene tree
+	-alignment 			Alignment file in FASTA format used to produce gene tree<br></br>
 	-tree 				Newick tree file created from alignment
 	-percent_length 		Percent in decimal format of unaligned sequence to alignment length [Default: 0.5]
 	-bootstrap 			Minimum bootstrap value for clade to be considered for consensus sequence [Default: 50]
 	-help 				Brief help message
 	-man 				Full documentation
-</p>
