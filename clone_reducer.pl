@@ -8,8 +8,8 @@ my $man = 0;
 my $help = 0;
 my $alignment;
 my $tree;
-my $perlen;
-my $bootstrapvalue;
+my $perlen = 0.5;
+my $bootstrapvalue = 50;
 
 GetOptions('help|?' => \$help, man => \$man, 'alignment' => \$alignment, 'tree' => \$tree, 'percent_length' => \$perlen, 'bootstrap' => \$bootstrapvalue) or pod2usage(2);
 pod2usage(1) if $help;
@@ -23,28 +23,27 @@ clone_reducer
 
 =head1 SYNOPSIS
 
-perl clone_reducer.pl [options] 
-
-	Options: 
-		-alignment 			Alignment file in FASTA format used to produce gene tree
-		-tree 				Newick tree file created from alignment
-		-percent_length 		Percent in decimal format of unaligned sequence to alignment length
-		-bootstrap 			Minimum bootstrap value for clade to be considered for consensus sequence
-		-help 				Brief help message
-		-man 				Full documentation
+perl clone_reducer.pl -alignment file -tree file [options] 
 
 =head1 OPTIONS
+
+	-alignment 			Alignment file in FASTA format used to produce gene tree
+	-tree 				Newick tree file created from alignment
+	-percent_length 		Percent in decimal format of unaligned sequence to alignment length [Default: 0.5]
+	-bootstrap 			Minimum bootstrap value for clade to be considered for consensus sequence [Default: 50]
+	-help 				Brief help message
+	-man 				Full documentation
+
 =cut
 
-#usage: Alignment, Tree, %length, BSV
-
 my (%alignment, %condensed_clones);
-open my $bad_seq_file, ">", $ARGV[0] . "_clones_condensed.fsa";
-open my $logfile, ">", $ARGV[0] . "_logfile_condensed_clones.fsa";
+$alignment =~ /^(.+)\.\w+$/;
+open my $bad_seq_file, ">", $1 . "_clones_condensed.fsa";
+open my $logfile, ">", $1 . "_logfile_condensed_clones.fsa";
 
-&read_fasta($ARGV[0], $ARGV[2]);
+&read_fasta($alignment, $perlen);
 
-&clone_remover($ARGV[1], $ARGV[3]);
+&clone_remover($tree, $bootstrapvalue);
 
 close $bad_seq_file;
 close $logfile;
@@ -119,12 +118,10 @@ sub clone_remover{
 			}
 			if ($bs >= $_[1]){
 				
-				#print "past the bs\n";
 				my @temp_descendents = $ancestor->get_all_Descendents;
 				for my $temp_descend (@temp_descendents){
 					if($temp_descend->is_Leaf){
 						$temp_descend=$temp_descend->id;
-						#print "putting $temp_descend in descendents array\n";
 						push(@descendents, $temp_descend);
 					}
 				}	
