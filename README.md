@@ -2,8 +2,8 @@ clone_reducer
 =============
 <b>Author</b>: Michael R. McKain<br>
 </br>
-Version 1.0: October 2014
-
+Version 1.0, October 2014
+<br></br>
 Clone reducing script used in Estep et al. (2014). DOI will be provided when available.
 
 Script looks at gene tree to identify clades with a bootstrap value of at least X that comprise the same accession/species. These clades are reduced (in the alignment) to a single consensus sequence. 
