@@ -11,8 +11,8 @@ my $tree;
 my $perlen = 0.5;
 my $bootstrapvalue = 50;
 my $consensus;
-my $largest;
-GetOptions('help|?' => \$help, man => \$man, 'alignment' => \$alignment, 'tree' => \$tree, 'percent_length' => \$perlen, 'bootstrap' => \$bootstrapvalue, "consensus" => \$consensus, "largest") or pod2usage(2);
+my $longest;
+GetOptions('help|?' => \$help, man => \$man, 'alignment' => \$alignment, 'tree' => \$tree, 'percent_length' => \$perlen, 'bootstrap' => \$bootstrapvalue, "consensus" => \$consensus, "longest" = >\$longest) or pod2usage(2);
 pod2usage(1) if $help;
 pod2usage(-exitstatus => 0, -verbose => 2) if $man;
 
@@ -33,7 +33,7 @@ perl clone_reducer.pl -alignment file -tree file [options]
 	-percent_length 		Percent in decimal format of unaligned sequence to alignment length [Default: 0.5]
 	-bootstrap 			Minimum bootstrap value for clade to be considered for consensus sequence [Default: 50]
 	-consensus 			Flag to output consensus sequence of clones
-	-largest 			Flag to output longest sequence of clones
+	-longest 			Flag to output longest sequence of clones
 	-help 				Brief help message
 	-man 				Full documentation
 
@@ -132,7 +132,12 @@ sub clone_remover{
 					for my $desc_taxon (@descendents){
 							if ($desc_taxon !~ /$sample/){
 								if(scalar @old_descendents > 1){
-									&consensus_seq(\@old_descendents);
+									if($consensus){
+										&consensus_seq(\@old_descendents);
+									}
+									if($longest){
+										&longest_seq(\@old_descendents);
+									}
 									for my $old_taxa (@old_descendents){
 										$used_taxa{$old_taxa}=1;
 									}
@@ -159,7 +164,12 @@ sub clone_remover{
 						}	
 					}
 					else{
-						&consensus_seq(\@old_descendents);
+						if($consensus){
+							&consensus_seq(\@old_descendents);
+						}
+						if($longest){
+							&longest_seq(\@old_descendents);
+						}
 						for my $old_taxa (@old_descendents){
 							$used_taxa{$old_taxa}=1;
 						}
@@ -299,7 +309,7 @@ sub consensus_seq{
 }
 		
 ########################
-sub largest_seq {
+sub longest_seq {
 	my %consensus;
 	my $sample_id = substr(@{$_[0]}[0], 0, index(@{$_[0]}[0], "_")); 
 	my $species = reverse(substr(reverse(substr(@{$_[0]}[0], index(@{$_[0]}[0], "_")+1)), index(reverse(substr(@{$_[0]}[0], index(@{$_[0]}[0], "_")+1)), "_")+1));
