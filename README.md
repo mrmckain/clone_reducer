@@ -32,5 +32,7 @@ Options:
 	-tree 				Newick tree file created from alignment
 	-percent_length 	Percent in decimal format of unaligned sequence to alignment length [Default: 0.5]
 	-bootstrap 			Minimum bootstrap value for clade to be considered for consensus sequence [Default: 50]
+	-consensus 			Flag to output consensus sequence of clones
+	-longest 			Flag to output longest sequence of clones
 	-help 				Brief help message
 	-man 				Full documentation
