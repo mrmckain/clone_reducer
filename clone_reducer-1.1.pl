@@ -32,6 +32,8 @@ perl clone_reducer.pl -alignment file -tree file [options]
 	-tree 				Newick tree file created from alignment
 	-percent_length 		Percent in decimal format of unaligned sequence to alignment length [Default: 0.5]
 	-bootstrap 			Minimum bootstrap value for clade to be considered for consensus sequence [Default: 50]
+	-consensus 			Flag to output consensus sequence of clones
+	-largest 			Flag to output longest sequence of clones
 	-help 				Brief help message
 	-man 				Full documentation
 
@@ -182,12 +184,12 @@ sub consensus_seq{
 	print $logfile "Consenus sequence made for:\t$sample_id\nClones used:\t";
 	CLONE: for my $clone (@{$_[0]}){
 		#my $clone_id = $clone;
-		if (exists $alignment{$clone_id}){
+		if (exists $alignment{$clone}){
 			$sample_id = substr($clone, 0, index($clone, "_"));
 			my $old_seq = $alignment{$clone};
 			$old_seq =~ s/-//g;
 			print $bad_seq_file ">$clone" . "_condensedclone\n$old_seq\n";
-			my $temp_cloneid = substr($clone_id, 0, -1);
+			my $temp_cloneid = substr($clone, 0, -1);
 			my $clone_id_marker= reverse(substr(reverse($temp_cloneid), 0, index(reverse($temp_cloneid), "_")));
 			print $logfile "$clone_id_marker\t";
 			my $seq = $alignment{$clone};
@@ -195,7 +197,7 @@ sub consensus_seq{
        		my $count = 0;
         	for my $sq (@current) {
         		$count++;
-            		$consensus{$clone{$count} = $sq;
+            		$consensus{$clone{$count}} = $sq;
     		}
     		
     		delete $alignment{$clone};
@@ -303,6 +305,9 @@ sub largest_seq {
 	my $species = reverse(substr(reverse(substr(@{$_[0]}[0], index(@{$_[0]}[0], "_")+1)), index(reverse(substr(@{$_[0]}[0], index(@{$_[0]}[0], "_")+1)), "_")+1));
 	print $logfile "Largest sequence chosen for:\t$sample_id\nClones used:\t";
 
+	my $longid;
+	my $long_len=0;
+	my $longseq;
 	CLONE: for my $clone (@{$_[0]}){
 		#my $clone_id = $clone;
 		if (exists $alignment{$clone}){
@@ -314,18 +319,20 @@ sub largest_seq {
 			my $clone_id_marker= reverse(substr(reverse($temp_cloneid), 0, index(reverse($temp_cloneid), "_")));
 			print $logfile "$clone_id_marker\t";
 			my $seq = $alignment{$clone};
-			my @current = split(//,$seq);
-       		my $count = 0;
-        	for my $sq (@current) {
-        		$count++;
-            		$consensus{$clone}{$count} = $sq;
-    		}
-    		
+			my $cur_len = length($seq);
+       		if($cur_len > $long_len){
+       				$long_len = $cur_len;
+       				$longid = $clone;
+       				$longseq = $alignment{$clone};
+       		}
+        	  	
     		delete $alignment{$clone};
     	}
     }
     print $logfile "\n";
-}	
-		
+	    	
+    print $logfile "Longest Sequence Used:\t$longid\n";
+    $alignment{$longid}=$;
+}
 	
 			
