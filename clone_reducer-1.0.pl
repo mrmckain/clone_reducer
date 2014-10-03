@@ -10,8 +10,9 @@ my $alignment;
 my $tree;
 my $perlen = 0.5;
 my $bootstrapvalue = 50;
-
-GetOptions('help|?' => \$help, man => \$man, 'alignment' => \$alignment, 'tree' => \$tree, 'percent_length' => \$perlen, 'bootstrap' => \$bootstrapvalue) or pod2usage(2);
+my $consensus;
+my $largest;
+GetOptions('help|?' => \$help, man => \$man, 'alignment' => \$alignment, 'tree' => \$tree, 'percent_length' => \$perlen, 'bootstrap' => \$bootstrapvalue, "consensus" => \$consensus, "largest") or pod2usage(2);
 pod2usage(1) if $help;
 pod2usage(-exitstatus => 0, -verbose => 2) if $man;
 
@@ -47,7 +48,6 @@ open my $logfile, ">", $1 . "_logfile_condensed_clones.fsa";
 
 close $bad_seq_file;
 close $logfile;
-#$ARGV[0] =~ /^([a-zA-Z0-9\._]+)$/ or die "Bad data in first argument";	
 my $outfile = $ARGV[0] . "_clonesremoved.fsa";
 open my $cleaned_seq_file, '>', $outfile;
 for my $sample_ids (sort keys %alignment){
@@ -181,24 +181,24 @@ sub consensus_seq{
 	my $species = reverse(substr(reverse(substr(@{$_[0]}[0], index(@{$_[0]}[0], "_")+1)), index(reverse(substr(@{$_[0]}[0], index(@{$_[0]}[0], "_")+1)), "_")+1));
 	print $logfile "Consenus sequence made for:\t$sample_id\nClones used:\t";
 	CLONE: for my $clone (@{$_[0]}){
-		my $clone_id = $clone;
+		#my $clone_id = $clone;
 		if (exists $alignment{$clone_id}){
-			$sample_id = substr($clone_id, 0, index($clone, "_"));
-			my $old_seq = $alignment{$clone_id};
+			$sample_id = substr($clone, 0, index($clone, "_"));
+			my $old_seq = $alignment{$clone};
 			$old_seq =~ s/-//g;
-			print $bad_seq_file ">$clone_id" . "_condensedclone\n$old_seq\n";
+			print $bad_seq_file ">$clone" . "_condensedclone\n$old_seq\n";
 			my $temp_cloneid = substr($clone_id, 0, -1);
 			my $clone_id_marker= reverse(substr(reverse($temp_cloneid), 0, index(reverse($temp_cloneid), "_")));
 			print $logfile "$clone_id_marker\t";
-			my $seq = $alignment{$clone_id};
+			my $seq = $alignment{$clone};
 			my @current = split(//,$seq);
        		my $count = 0;
         	for my $sq (@current) {
         		$count++;
-            		$consensus{$clone_id}{$count} = $sq;
+            		$consensus{$clone{$count} = $sq;
     		}
     		
-    		delete $alignment{$clone_id};
+    		delete $alignment{$clone};
     	}
     }
     print $logfile "\n";
@@ -296,7 +296,5 @@ sub consensus_seq{
     $alignment{$consensus_id}=$newseq;
 }
 		
-			
-		
-	
+
 			
