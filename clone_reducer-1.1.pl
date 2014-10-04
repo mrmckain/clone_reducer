@@ -12,11 +12,10 @@ my $perlen = 0.5;
 my $bootstrapvalue = 50;
 my $consensus;
 my $longest;
-GetOptions('help|?' => \$help, man => \$man, 'alignment' => \$alignment, 'tree' => \$tree, 'percent_length' => \$perlen, 'bootstrap' => \$bootstrapvalue, "consensus" => \$consensus, "longest" = >\$longest) or pod2usage(2);
+GetOptions('help|?' => \$help, man => \$man, "alignment=s" => \$alignment, "tree=s" => \$tree, "percent_length=f" => \$perlen, "bootstrap=i" => \$bootstrapvalue, 'consensus' => \$consensus, 'longest' => \$longest) or pod2usage(2);
 pod2usage(1) if $help;
 pod2usage(-exitstatus => 0, -verbose => 2) if $man;
 
-__END__
 
 =head1 NAME
 
@@ -41,8 +40,9 @@ perl clone_reducer.pl -alignment file -tree file [options]
 
 my (%alignment, %condensed_clones);
 $alignment =~ /^(.+)\.\w+$/;
-open my $bad_seq_file, ">", $1 . "_clones_condensed.fsa";
-open my $logfile, ">", $1 . "_logfile_condensed_clones.fsa";
+my $prefix = $1;
+open my $bad_seq_file, ">", $prefix . "_clones_condensed.fsa";
+open my $logfile, ">", $prefix . "_logfile_condensed_clones.fsa";
 
 &read_fasta($alignment, $perlen);
 
@@ -50,7 +50,7 @@ open my $logfile, ">", $1 . "_logfile_condensed_clones.fsa";
 
 close $bad_seq_file;
 close $logfile;
-my $outfile = $ARGV[0] . "_clonesremoved.fsa";
+my $outfile = $prefix . "_clonesremoved.fsa";
 open my $cleaned_seq_file, '>', $outfile;
 for my $sample_ids (sort keys %alignment){
 	my $seq = $alignment{$sample_ids};
@@ -207,7 +207,7 @@ sub consensus_seq{
        		my $count = 0;
         	for my $sq (@current) {
         		$count++;
-            		$consensus{$clone{$count}} = $sq;
+            		$consensus{$clone}{$count} = $sq;
     		}
     		
     		delete $alignment{$clone};
