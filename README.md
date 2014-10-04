@@ -2,7 +2,7 @@ clone_reducer
 =============
 <b>Author</b>: Michael R. McKain<br>
 </br>
-Version 1.0, October 2014
+Version 1.1, October 2014
 <br></br>
 <b>Contact</b>: https://github.com/mrmckain
 <h3>Description</h3>
