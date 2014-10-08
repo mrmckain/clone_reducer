@@ -193,7 +193,10 @@ sub consensus_seq{
 	my $species = reverse(substr(reverse(substr(@{$_[0]}[0], index(@{$_[0]}[0], "_")+1)), index(reverse(substr(@{$_[0]}[0], index(@{$_[0]}[0], "_")+1)), "_")+1));
 	print $logfile "Consenus sequence made for:\t$sample_id\nClones used:\t";
 	CLONE: for my $clone (@{$_[0]}){
-		#my $clone_id = $clone;
+		#RAxML adds an underscore to taxa names.  Must be removed to id match.
+		if($clone =~ /_$/){
+				$clone = substr($clone, 0, -1);
+		}
 		if (exists $alignment{$clone}){
 			$sample_id = substr($clone, 0, index($clone, "_"));
 			my $old_seq = $alignment{$clone};
@@ -319,7 +322,10 @@ sub longest_seq {
 	my $long_len=0;
 	my $longseq;
 	CLONE: for my $clone (@{$_[0]}){
-		#my $clone_id = $clone;
+		#RAxML adds an underscore to taxa names.  Must be removed to id match.
+		if($clone =~ /_$/){
+				$clone = substr($clone, 0, -1);
+		}
 		if (exists $alignment{$clone}){
 			$sample_id = substr($clone, 0, index($clone, "_"));
 			my $old_seq = $alignment{$clone};
