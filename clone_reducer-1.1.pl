@@ -345,10 +345,20 @@ sub longest_seq {
     		delete $alignment{$clone};
     	}
     }
-    print $logfile "\n";
-	    	
-    print $logfile "Longest Sequence Used:\t$longid\n";
-    $alignment{$longid}=$longseq;
-}
+    
+    # Log longest sequences (if found, otherwise indicate "clones used" are not applicable)
+    if (defined $longid) {
+        print $logfile "\n";
+        print $logfile "Longest Sequence Used:\t$longid\n";
 	
-			
+        # Store longest sequence from those checked under the name of the corresponding clone
+        $alignment{$longid}=$longseq;
+        return $longseq;
+    }
+    else {
+        print $logfile "NA\n";
+
+        # Return empty handed because nothing was found
+        return;
+    }
+}
